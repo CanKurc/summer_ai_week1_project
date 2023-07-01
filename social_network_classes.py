@@ -71,22 +71,32 @@ class SocialMedia:
             if (i == friend_acc_name):
                 print("MESSAGE SENT: \n " + message + "\n To friend " + i)
                 x = True
-        
+
         return x
-    
+
 
     def saveAccount(self):
-        # Data to be written
-        dictionary = {
-            "name": self.name,
-            "age": self.age,
-            "account_name": self.account_name,
-            "friends": self.friends,
-            "blocked_friends": self.blockedFriends
+        array = []
+        small_array = []
+        if os.path.exists("sample.json"):
+            # Opening JSON file
+            with open('sample.json', 'r') as file:
+                v = json.loads("\n".join(file.readlines()))
+                array = (v["array"])
+
+        small_array.append(self.name)
+        small_array.append(self.age)
+        small_array.append(self.account_name)
+        small_array.append(self.friends)
+        small_array.append(self.blockedFriends)
+
+        array.append(small_array)
+
+        dict = {
+            "array": array
         }
-        
         # Serializing json
-        json_object = json.dumps(dictionary, indent=5)
+        json_object = json.dumps(dict, indent=1)
         
         # Writing to sample.json
         with open("sample.json", "w") as outfile:
@@ -96,18 +106,31 @@ class SocialMedia:
             
     def loadAccount(self, account_name):
         x = False
+        array = []
         if os.path.exists("sample.json"):
             # Opening JSON file
             with open('sample.json', 'r') as file:
                 v = json.loads("\n".join(file.readlines()))
-                if account_name == v["account_name"]:
-                    x = True
-                    if x:
-                        self.name = v["name"]
-                        self.age = v["age"]
-                        self.account_name = v["account_name"]
-                        self.friends = v["friends"]
-                        self.blockedFriends = v["blocked_friends"]
+                array = (v["array"])
+        
+        for i in array:
+            if(i[2] == account_name):
+                x = True
+                self.name = i[0]
+                self.age = i[1]
+                self.account_name = i[2]
+                self.friends = i[3]
+                self.blockedFriends = i[4]
+                array.remove(i)
+                dict = {
+                    "array": array
+                }
+                # Serializing json
+                json_object = json.dumps(dict, indent=1)
+                
+                # Writing to sample.json
+                with open("sample.json", "w") as outfile:
+                    outfile.write(json_object)
                         
         return x
 
@@ -119,3 +142,8 @@ class SocialMedia:
         self.account_name = None
         self.friends = None
         self.blockedFriends = None
+        dictionary = {}
+        json_object = json.dumps(dictionary, indent=5)
+        with open("sample.json", "w") as outfile:
+            outfile.write(json_object)
+        print("Account successfully deleted...")

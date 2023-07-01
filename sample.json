@@ -1,11 +1,28 @@
 {
-     "name": "can",
-     "age": "123",
-     "account_name": "can",
-     "friends": [
-          "a"
-     ],
-     "blocked_friends": [
-          "f"
-     ]
+ "array": [
+  [
+   "can",
+   "1",
+   "can",
+   [
+    "a",
+    "ekin"
+   ],
+   [
+    "f"
+   ]
+  ],
+  [
+   "deneme",
+   "16",
+   "deneme",
+   [
+    "a",
+    "can"
+   ],
+   [
+    "f"
+   ]
+  ]
+ ]
 }

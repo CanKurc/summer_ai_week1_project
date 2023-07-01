@@ -71,9 +71,12 @@ def manageAccount():
             time.sleep(2)
             socialNetwork.saveAccount()
             break
-
-
-
+        
+        elif manege_menu_choice == "9":
+            print("Deleting account...\n")
+            time.sleep(2)
+            socialNetwork.deleteAccount()
+            break
             
 
 #The line below is a python keyword to specify which 
