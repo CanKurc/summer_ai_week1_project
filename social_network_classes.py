@@ -142,8 +142,26 @@ class SocialMedia:
         self.account_name = None
         self.friends = None
         self.blockedFriends = None
-        dictionary = {}
-        json_object = json.dumps(dictionary, indent=5)
-        with open("sample.json", "w") as outfile:
-            outfile.write(json_object)
+
+        array = []
+        if os.path.exists("sample.json"):
+            # Opening JSON file
+            with open('sample.json', 'r') as file:
+                v = json.loads("\n".join(file.readlines()))
+                array = (v["array"])
+            
+        for i in array:
+            if(i[2] == self.account_name):
+                array.remove(i)
+                dict = {
+                    "array": array
+                }
+                # Serializing json
+                json_object = json.dumps(dict, indent=1)
+                
+                # Writing to sample.json
+                with open("sample.json", "w") as outfile:
+                    outfile.write(json_object)
+
+
         print("Account successfully deleted...")

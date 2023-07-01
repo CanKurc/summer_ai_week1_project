@@ -77,7 +77,13 @@ def manageAccount():
             time.sleep(2)
             socialNetwork.deleteAccount()
             break
-            
+
+        elif manege_menu_choice == "10":
+            print("RETURNING BACK... \n")
+            print('NOTE: Your account changes WILL BE LOST')
+            time.sleep(2)
+            break
+
 
 #The line below is a python keyword to specify which 
 if __name__ == "__main__":
