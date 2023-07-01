@@ -1,0 +1,11 @@
+{
+     "name": "can",
+     "age": "123",
+     "account_name": "can",
+     "friends": [
+          "a"
+     ],
+     "blocked_friends": [
+          "f"
+     ]
+}

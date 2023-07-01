@@ -1,38 +1,121 @@
-# A class to hold general system wide social media data and functions. Eg Data objects of all people, Eg functions: Save social media to disk
-class SocialNetwork:
+import json
+import os
+
+class SocialMedia:
     def __init__(self):
-        self.list_of_people = [] # this instance variable is initialized to an empty list when social network is created, 
-                                 # you can save objects of people on the network in this list
+        self.name = None
+        self.age = None
+        self.account_name = None
+        self.friends = []
+        self.blockedFriends = []
+    
+    def createAccount(self, name, age, account_name):
+        self.name = name
+        self.age = age
+        self.account_name = account_name
+        print("account name is: " + self.name)
+
+    def getAccountDetails(self):
+        return [self.name, self.age, self.account_name, self.friends, self.blockedFriends]
+    
+    def addNewFriend(self, friend_acc_name):
+        self.friends.append(friend_acc_name)
+
+    def printFriends(self, realFriends):
+        if realFriends:
+            if (len(self.friends) == 0):
+                print('YOU HAVE NO FRIENDS')
+            else:
+                for i in self.friends:
+                    print(i)
+        else:
+            if (len(self.blockedFriends) == 0):
+                print('YOU HAVE NO BLOCKED FRIENDS')
+            else:
+                for i in self.blockedFriends:
+                    print(i)
+
+    def blockFriend(self, blocked_friend_acc_name, blockFriend):
+        if blockFriend:
+            x = False
+            for i in self.friends:
+                if (i == blocked_friend_acc_name):
+                    self.blockedFriends.append(blocked_friend_acc_name)
+                    self.friends.remove(i)
+                    x = True
+                    break
+            if(x):
+                print("Successfully blocked friend " + blocked_friend_acc_name)
+                return True
+            else:
+                print(blocked_friend_acc_name + " was not a friend, couldn't block")
+                return False
+        else:
+            x = False
+            for i in self.blockedFriends:
+                if (i == blocked_friend_acc_name):
+                    self.friends.append(blocked_friend_acc_name)
+                    self.blockedFriends.remove(i)
+                    x = True
+                    break
+            if(x):
+                print("Successfully unblocked friend " + blocked_friend_acc_name)
+                return True
+            else:
+                print(blocked_friend_acc_name + " was not a friend, couldn't unblock")
+                return False       
+
+    def sendMessage(self, friend_acc_name, message):
+        x = False
+        for i in self.friends:
+            if (i == friend_acc_name):
+                print("MESSAGE SENT: \n " + message + "\n To friend " + i)
+                x = True
         
-    ## For more challenge try this
-    def save_social_media(self):
-        # function to save social media to a file on disk 
-        # hint: look up how to use python's inbuil json module to turn objects to json
-        # you can write this json unto a file on disk
-        pass
+        return x
+    
 
-    ## For more challenge try this
-    def reload_social_media(self):
-        # function to load saved social media from file on disk 
-        # hint: load a the json file from disk and look up how to recreate the list of people objects.
-        pass
+    def saveAccount(self):
+        # Data to be written
+        dictionary = {
+            "name": self.name,
+            "age": self.age,
+            "account_name": self.account_name,
+            "friends": self.friends,
+            "blocked_friends": self.blockedFriends
+        }
+        
+        # Serializing json
+        json_object = json.dumps(dictionary, indent=5)
+        
+        # Writing to sample.json
+        with open("sample.json", "w") as outfile:
+            outfile.write(json_object)
+        
+        print("Account save successful...")
+            
+    def loadAccount(self, account_name):
+        x = False
+        if os.path.exists("sample.json"):
+            # Opening JSON file
+            with open('sample.json', 'r') as file:
+                v = json.loads("\n".join(file.readlines()))
+                if account_name == v["account_name"]:
+                    x = True
+                    if x:
+                        self.name = v["name"]
+                        self.age = v["age"]
+                        self.account_name = v["account_name"]
+                        self.friends = v["friends"]
+                        self.blockedFriends = v["blocked_friends"]
+                        
+        return x
 
-    def  create_account(self):
-        #implement function that creates account here
-        print("Creating ...")
-        pass
 
 
-class Person:
-    def __init__(self, name, age):
-        self.id = name
-        self.year = age
-        self.friendlist = []
-
-    def add_friend(self, person_object):
-        #implement adding friend. Hint add to self.friendlist
-        pass
-
-    def send_message(self):
-        #implement sending message to friend here
-        pass
+    def deleteAccount(self):
+        self.name = None
+        self.age = None
+        self.account_name = None
+        self.friends = None
+        self.blockedFriends = None
